@@ -27,7 +27,8 @@ bool suffix_cmp(suffix_struct a,suffix_struct b)
 }
 
 int P[MAXLG][MAXN]; // P is the Array where P[i] denotes the sorted array after i iterations, comparing first 2^i letters of suffixes
-int lcp[MAXN]; //lcp[i] is lcp of ith and i+1^th suffix , -1 if undefined.
+int lcp[MAXN]; //lcp[i] is lcp of ith and i-1^th suffix , lcp[0] is 0.
+int cnt[MAXN];
 // Understand what P[i][j] gives i.e at i^th stage of the process , the sorted index of the j^th suffix . 0^th suffix is the entire string and so on
 // Objects[i]
 int stg=0;
@@ -81,17 +82,44 @@ int get_lcp(int x,int y) // LCP of x^th suffix and y^th suffix in O(logn)
 	return ans;
 }
 
-void build_lcparray()
+void build_lcparray() // Runs in NlogN time  // LCP[i] is Longest Common Prefix of strings at ith and i-1th index in sorted SA.
 {
 	memset(lcp,-1,sizeof(lcp));
-	for(int i=0;i<len-1;i++)
+	lcp[0]=0;
+	for(int i=1;i<len;i++)
 	{
-		lcp[i] = get_lcp(obj[i].pos,obj[i+1].pos); 
+		lcp[i] = get_lcp(obj[i].pos,obj[i-1].pos); 
 	}
 }
 
 
+int len_suffix(int pos) // Length of Suffix starting at position pos.
+{
+	return len-pos+1;
+}
 
+void count_array()
+{
+	
+	for(int i=0;i<len;i++)
+	{
+		int pos;
+		for(int j=lcp[i];j<len_suffix(obj[i].pos);j++)
+		{
+			if(j==lcp[i])
+			{
+				for(pos=i;pos<len;pos++)
+				{
+					if(ar[pos])
+				}
+			}
+
+
+
+		}
+	}
+
+}
 
 
 int main()
@@ -109,6 +137,7 @@ int main()
 	for(int i=0;i<len;i++)
 	cout << lcp[i] << " ";
 	cout << endl;
+
 
 	
 	return 0;
